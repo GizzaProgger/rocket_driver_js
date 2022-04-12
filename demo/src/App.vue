@@ -9,7 +9,7 @@
 </style>
 
 <script>
-import Rocket from "../../src/index"
+import { Driver } from "./../../dist/main.bundle"
 export default {
   async mounted() {
     let channelId = "7XmkPFEABg6TS49En";
@@ -28,15 +28,15 @@ export default {
         return transformedMsg
       }
     }
-    const driver = new Rocket(hooks);
+    const driver = new Driver(hooks);
     await driver.connect("wss://roket.xacademy.uz");
     await driver.user.login({
       token: "97s8-De37X3aVreFGoJnqv6n5VzWbEPBelzoslu5yAQ",
     });
     await driver.subscribe([channelId])
-    // driver.channels[channelId].loadHistory(300).then(() => {
-    //   console.log('loaded')
-    // }).catch(console.log)
+    driver.channels[channelId].loadHistory(300).then(() => {
+      console.log('loaded')
+    }).catch(console.log)
   }
 }
 </script>
