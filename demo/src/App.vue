@@ -9,7 +9,7 @@
 </style>
 
 <script>
-import Rocket from "./../../index"
+import Rocket from "../../src/index"
 export default {
   async mounted() {
     let channelId = "7XmkPFEABg6TS49En";

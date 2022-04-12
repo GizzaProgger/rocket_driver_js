@@ -1,7 +1,7 @@
 import User from './../User/index.js'
 import Connection from './../Connection/index.js'
 import Channel from './../Channel/index.js'
-import Store from "./../../Store"
+import Store from "./../../Store.js"
 
 export default class {
   constructor(hooks) {

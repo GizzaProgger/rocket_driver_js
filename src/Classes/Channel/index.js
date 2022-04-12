@@ -1,5 +1,5 @@
 import Emitter from './../Emitter/index.js'
-import Store from "./../../Store"
+import Store from "./../../Store.js"
 
 export default class extends Emitter {
   constructor(connection, id, isDirect) {
