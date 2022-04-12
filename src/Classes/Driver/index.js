@@ -46,7 +46,7 @@ export default class {
 
   _setHooks(hooks) {
     let fullHooks = hooks || {}
-    if (!fullHooks?.transformMsg) fullHooks.transformMsg = () => {}
+    if (!fullHooks?.transformMsg) fullHooks.transformMsg = (msg) => msg
     Store.hooks = fullHooks
   }
 }
