@@ -64,4 +64,7 @@ export default class {
       }
     })
   }
+  createChannel(name, members = [], readOnly = false) {
+    return this.connection.rest.createChannel(name, members, readOnly)
+  }
 }

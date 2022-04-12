@@ -29,6 +29,14 @@ export default instanse => {
       if (msg) {
         return instanse.post('/chat.postMessage', q)
       }
+    },
+    createChannel(name, members = [], readOnly = false) {
+      const q = {
+        name,
+        members,
+        readOnly
+      }
+      return instanse.post('/channels.create', q)
     }
   }
 }
