@@ -12,15 +12,23 @@
 import Rocket from "./../../index"
 export default {
   async mounted() {
-    let channelId = "G2ZfiPo6zk8exPG9Z";
-    const driver = Rocket.driver;
-    const functions = {
-      async getUsers() {
-        return [
-          
-        ]
+    let channelId = "7XmkPFEABg6TS49En";
+    let getUserInfo = (chatId) => {
+      return {
+        name: "Sample user",
+        avatar: "https://www.vokrug.tv/pic/person/2/b/f/4/2bf448098b7badf3b37e87c510da29bc.jpeg"
       }
     }
+    const hooks = {
+      async transformMsg(msg) {
+        let transformedMsg = msg
+        let user = getUserInfo(msg.u._id)
+        transformedMsg.u.name = user.name
+        transformedMsg.u.avatar = user.avatar
+        return transformedMsg
+      }
+    }
+    const driver = new Rocket(hooks);
     await driver.connect("wss://roket.xacademy.uz");
     await driver.user.login({
       token: "97s8-De37X3aVreFGoJnqv6n5VzWbEPBelzoslu5yAQ",

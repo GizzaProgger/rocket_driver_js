@@ -1,4 +1,5 @@
 import Emitter from './../Emitter/index.js'
+import Store from "./../../Store"
 
 export default class extends Emitter {
   constructor(connection, id, isDirect) {
@@ -56,12 +57,16 @@ export default class extends Emitter {
       rid
     })
   }
-  addMsg(msg) {
+  async addMsg(msg) {
     if (msg.rid !== this.roomId) return
-    this.msgs.push(msg)
+    let transformedMsg = await Store.hooks.transformMsg(msg)
+    this.msgs.push(transformedMsg)
+    return transformedMsg
   }
-  addMsgs(msgs) {
-    msgs.forEach(msg => this.addMsg(msg))
+  async addMsgs(msgs) {
+    for (const msg of msgs) {
+      await this.addMsg(msg)
+    }
   }
   async loadHistory(offset = 50, lastDate = null) {
     return new Promise((resolve, reject) => {

@@ -13,7 +13,7 @@ export default class extends Emitter {
       this.websocket.onmessage = e => {
         try {
           let data = JSON.parse(e.data)
-          console.log(data)
+          // console.log(data)
           // Обрабатываем все сообщения, которые пришли от Рокета
           if (data.error) {
             console.error(data.error)

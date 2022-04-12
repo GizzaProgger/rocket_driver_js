@@ -1,10 +1,12 @@
 import User from './../User/index.js'
 import Connection from './../Connection/index.js'
 import Channel from './../Channel/index.js'
+import Store from "./../../Store"
 
 export default class {
-  constructor() {
+  constructor(hooks) {
     this.channels = {}
+    this._setHooks(hooks)
   }
   async connect(url) {
     if (!url) throw new Error('url param is required')
@@ -40,5 +42,11 @@ export default class {
   }
   set channels(channels) {
     this._channels = channels
+  }
+
+  _setHooks(hooks) {
+    let fullHooks = hooks || {}
+    if (!fullHooks?.transformMsg) fullHooks.transformMsg = () => {}
+    Store.hooks = fullHooks
   }
 }
