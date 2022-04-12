@@ -1,3 +1,5 @@
+import sha256 from "js-sha256"
+
 export default class {
   constructor(connection) {
     this.connection = connection
@@ -30,6 +32,32 @@ export default class {
           params: [
             {
               resume: authData.token
+            }
+          ]
+        })
+      } else if (authData.login) {
+        this.connection.on('login', data => {
+          if (data.result.token) {
+            this.connection.initREST({
+              token: data.result.token,
+              userId: data.result.id
+            })
+            return res()
+          }
+          if (data.error) console.log('Error with loggin: ', error)
+          rej(data)
+        })
+        this.connection.send({
+          msg: 'method',
+          event: 'login',
+          method: 'login',
+          params: [
+            {
+              user: { username: authData.login },
+              password: {
+                digest: sha256.sha256(authData.password),
+                algorithm: "sha-256"
+              }
             }
           ]
         })
