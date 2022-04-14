@@ -24,5 +24,7 @@ await driver.user.login({
 });
 let channel = await driver.user.createChannel(channelId)
 await driver.subscribe([channelId])
-await driver.channels[channelId].sendMessage("test")
+driver.activeChannel = channelId
+await driver.activeChannel.sendMessage("test")
 await driver.channels[channelId].loadHistory(300)
+console.log(driver.activeChannel.msgs)

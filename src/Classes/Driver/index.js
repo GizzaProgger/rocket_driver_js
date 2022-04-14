@@ -8,6 +8,20 @@ export default class {
     this.channels = {}
     this._setHooks(hooks)
   }
+  get channels() {
+    return this._channels
+  }
+  set channels(channels) {
+    this._channels = channels
+  }
+  get activeChannel() {
+    let index = Object.keys(this._channels).findIndex(id => this._activeChannel)
+    if (index >= 0) return Object.values(this._channels)[index]
+    throw `has no channel active channel` 
+  }
+  set activeChannel(id) {
+    this._activeChannel = id
+  }
   async connect(url) {
     if (!url) throw new Error('url param is required')
     this.connection = new Connection()
@@ -37,13 +51,6 @@ export default class {
       delete this.channels[channelId]
     }
   }
-  get channels() {
-    return this._channels
-  }
-  set channels(channels) {
-    this._channels = channels
-  }
-
   _setHooks(hooks) {
     let fullHooks = hooks || {}
     if (!fullHooks?.transformMsg) fullHooks.transformMsg = (msg) => msg

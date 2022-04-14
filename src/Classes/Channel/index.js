@@ -10,6 +10,17 @@ export default class extends Emitter {
     this.msgs = []
     this.uid = null
   }
+  get roomId() {
+    return this.isDirect ? this.directRid : this.uid
+  }
+  get msgs() {
+    return this._msgs.sort(
+      (a, b) => +new Date(a.ts.$date) - +new Date(b.ts.$date)
+    )
+  }
+  set msgs(msgs) {
+    this._msgs = msgs
+  }
   async init() {
     await this._setUid()
     this.connection.on('changed', data => {
@@ -81,7 +92,6 @@ export default class extends Emitter {
         this.addMsgs(d.result.messages)
         resolve(d.result.messages)
       }).error(15000, reject)
-      console.log(this.roomId)
       this.connection.send({
         msg: 'method',
         method: 'loadHistory',
@@ -96,15 +106,5 @@ export default class extends Emitter {
     if (uid) return this.uid = uid
     throw "error with set uid room"
   }
-  get roomId() {
-    return this.isDirect ? this.directRid : this.uid
-  }
-  get msgs() {
-    return this._msgs.sort(
-      (a, b) => +new Date(a.ts.$date) - +new Date(b.ts.$date)
-    )
-  }
-  set msgs(msgs) {
-    this._msgs = msgs
-  }
+  
 }

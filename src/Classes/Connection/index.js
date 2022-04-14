@@ -63,7 +63,6 @@ export default class extends Emitter {
     if (!msg || !msg?.id?.split) return
     let eventName = msg.id.split('|')[0]
     // Если подписка
-    console.log(msg)
     if (msg?.subs) this._generateSubsEvents(msg.subs)
     // Если событие генерировали мы, то мы генерируем событие, которое сами указали
     else if (eventName && msg.id.split('|').length >= 2) this.emit(eventName, msg)
