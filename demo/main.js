@@ -1,6 +1,6 @@
 // import Driver from "/index.js"
 const Driver = window.Driver
-let channelId = "7XmkPFEABg6TS49En";
+let channelId = "test112";
 let getUserInfo = (chatId) => {
   return {
     name: "Sample user",
@@ -22,8 +22,7 @@ await driver.user.login({
   login: "newuser-53",
   password: "$2y$10$qeasfnOPzQF1Slpo0oqQUOJUuNRVGxE9DFPPKHBcd1YUEWwPeMqSu"
 });
-let channel = await driver.user.createChannel("test112")
-await driver.subscribe(['wLNqwd3amWc4sCQze'])
-// driver.channels[channelId].loadHistory(300).then(() => {
-//   console.log('loaded')
-// }).catch(console.log)
+let channel = await driver.user.createChannel(channelId)
+await driver.subscribe([channelId])
+await driver.channels[channelId].sendMessage("test")
+await driver.channels[channelId].loadHistory(300)

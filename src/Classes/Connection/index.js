@@ -18,7 +18,7 @@ export default class extends Emitter {
           if (data.error) {
             console.error(data.error)
           }
-          if (data?.id) this.genereteEvent(data)
+          if (data?.id || data?.subs) this.genereteEvent(data)
           if (data.msg === 'error') {
             console.error('Error with Rocketchat. Msg:', data.reason)
           }
@@ -62,12 +62,19 @@ export default class extends Emitter {
   genereteEvent(msg) {
     if (!msg || !msg?.id?.split) return
     let eventName = msg.id.split('|')[0]
+    // Если подписка
+    console.log(msg)
+    if (msg?.subs) this._generateSubsEvents(msg.subs)
     // Если событие генерировали мы, то мы генерируем событие, которое сами указали
-    if (eventName && msg.id.split('|').length >= 2) this.emit(eventName, msg)
+    else if (eventName && msg.id.split('|').length >= 2) this.emit(eventName, msg)
     // Если есть сообщение, то генерирем событие с таким названием
     else if (msg.msg) this.emit(msg.msg, msg)
     // Если ничего из этого нет, то гененерируем дефолтное событие
     else this.emit('default', msg)
+  }
+  _generateSubsEvents(subs) {
+    // TODO
+    console.log(subs)
   }
   initREST({ token, userId }) {
     this.rest = REST({

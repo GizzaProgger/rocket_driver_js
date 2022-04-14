@@ -8,8 +8,10 @@ export default class extends Emitter {
     this.connection = connection
     this.isDirect = isDirect
     this.msgs = []
+    this.uid = null
   }
   async init() {
+    await this._setUid()
     this.connection.on('changed', data => {
       if (data.collection !== 'stream-room-messages') return
       let msgs = data.fields.args
@@ -42,6 +44,11 @@ export default class extends Emitter {
     })
   }
   subscribe() {
+    // TODO
+    // Сделать обработку евента подписки
+    this.connection.on(`subscribe:${this.roomId}`, res => {
+      console.log(res)
+    })
     this.connection.send({
       msg: 'sub',
       name: 'stream-room-messages',
@@ -70,26 +77,27 @@ export default class extends Emitter {
   }
   async loadHistory(offset = 50, lastDate = null) {
     return new Promise((resolve, reject) => {
-      let id = this.isDirect ? this.directRid : this.id
-      console.log('load')
       this.connection.on(`loadHistory:${this.roomId}`, d => {
         this.addMsgs(d.result.messages)
         resolve(d.result.messages)
       }).error(15000, reject)
+      console.log(this.roomId)
       this.connection.send({
         msg: 'method',
         method: 'loadHistory',
         event: `loadHistory:${this.roomId}`,
-        params: [id, null, offset, lastDate]
+        params: [this.roomId, null, offset, lastDate]
       })
     })
   }
-  async _setRid() {
-    let promise = await this.connection.roomInfo
-    console.log(promise)
+  async _setUid() {
+    let response = await this.connection.rest.roomInfo({ name: this.id })
+    let uid = response.data?.channel?._id
+    if (uid) return this.uid = uid
+    throw "error with set uid room"
   }
   get roomId() {
-    return this.isDirect ? this.directRid : this.id
+    return this.isDirect ? this.directRid : this.uid
   }
   get msgs() {
     return this._msgs.sort(

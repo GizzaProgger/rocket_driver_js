@@ -23,6 +23,7 @@ export default {
       SRC: path.resolve(__dirname, "src/")
     }
   },
+  devtool: 'inline-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Development',
