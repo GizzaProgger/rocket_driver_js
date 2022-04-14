@@ -30,13 +30,22 @@ export default instanse => {
         return instanse.post('/chat.postMessage', q)
       }
     },
-    createChannel(name, members = [], readOnly = false) {
+    async createChannel(name, members = [], readOnly = false) {
       const q = {
         name,
         members,
         readOnly
       }
-      return instanse.post('/channels.create', q)
+      try {
+        let promise = await instanse.post('/channels.create', q)
+        return promise
+      } catch (error) {
+        return error
+      }
+    },
+    roomInfo({ rid = "", name = "" }) {
+      let q = `roomId=${rid}&roomName=${name}`
+      return instanse.get(`/channels.info?${q}`)
     }
   }
 }

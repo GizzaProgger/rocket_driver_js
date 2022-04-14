@@ -84,6 +84,10 @@ export default class extends Emitter {
       })
     })
   }
+  async _setRid() {
+    let promise = await this.connection.roomInfo
+    console.log(promise)
+  }
   get roomId() {
     return this.isDirect ? this.directRid : this.id
   }

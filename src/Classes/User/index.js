@@ -13,18 +13,18 @@ export default class {
         console.error('auth data is not valid')
         return rej()
       }
+      this.connection.on('login', data => {
+        if (data.result.token) {
+          this.connection.initREST({
+            token: data.result.token,
+            userId: data.result.id
+          })
+          return res()
+        }
+        if (data.error) console.log('Error with loggin: ', error)
+        rej(data)
+      }).error(15000, rej)
       if (authData.token) {
-        this.connection.on('login', data => {
-          if (data.result.token) {
-            this.connection.initREST({
-              token: data.result.token,
-              userId: data.result.id
-            })
-            return res()
-          }
-          if (data.error) console.log('Error with loggin: ', error)
-          rej(data)
-        })
         this.connection.send({
           msg: 'method',
           event: 'login',
@@ -36,17 +36,6 @@ export default class {
           ]
         })
       } else if (authData.login) {
-        this.connection.on('login', data => {
-          if (data.result.token) {
-            this.connection.initREST({
-              token: data.result.token,
-              userId: data.result.id
-            })
-            return res()
-          }
-          if (data.error) console.log('Error with loggin: ', error)
-          rej(data)
-        })
         this.connection.send({
           msg: 'method',
           event: 'login',

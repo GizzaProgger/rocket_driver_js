@@ -23,7 +23,6 @@ await driver.user.login({
   password: "$2y$10$qeasfnOPzQF1Slpo0oqQUOJUuNRVGxE9DFPPKHBcd1YUEWwPeMqSu"
 });
 let channel = await driver.user.createChannel("test112")
-console.log(channel)
 await driver.subscribe(['wLNqwd3amWc4sCQze'])
 // driver.channels[channelId].loadHistory(300).then(() => {
 //   console.log('loaded')
